@@ -4,8 +4,10 @@ import getpass
 import os
 import threading
 from collections.abc import Callable
+from pathlib import Path
 
 from garminconnect import Garmin
+from garminconnect.client.tokens import token_file_path
 from garminconnect.exceptions import (
     GarminConnectAuthenticationError,
     GarminConnectConnectionError,
@@ -39,11 +41,13 @@ def interactive_login() -> Garmin:
     return garmin
 
 
+def _token_file() -> Path:
+    return token_file_path(config.tokenstore())
+
+
 def clear_tokens() -> bool:
     """Delete saved tokens. Returns True if a token file existed."""
-    from garminconnect.client.tokens import token_file_path
-
-    path = token_file_path(config.tokenstore())
+    path = _token_file()
     if path.exists():
         path.unlink()
         return True
@@ -70,6 +74,10 @@ class GarminSession:
     def _login(self) -> Garmin:
         email = os.environ.get("GARMIN_EMAIL")
         password = os.environ.get("GARMIN_PASSWORD")
+        if not (email and password) and not _token_file().exists():
+            raise NotLoggedInError(
+                f"No saved Garmin session in {config.tokenstore()}. {LOGIN_HINT}"
+            )
         garmin = _new_client(email, password)
         try:
             garmin.login(config.tokenstore())
