@@ -168,6 +168,10 @@ class Toolbox:
         except (ValueError, TypeError) as e:
             raise ToolError(f"{name}: invalid arguments: {e}") from e
 
+    def call_method(self, name: str, **kwargs: Any) -> Any:
+        """Call the `Garmin` method called `name` with keyword arguments."""
+        return self.call(name, lambda garmin, **kw: getattr(garmin, name)(**kw), **kwargs)
+
     def text(self, obj: Any) -> str:
         return "null" if obj is None else render(obj, self.max_chars)
 
@@ -176,7 +180,7 @@ def _make_tool(box: Toolbox, name: str, method: Callable[..., Any]) -> Callable[
     signature = _tool_signature(method)
 
     def tool(**kwargs: Any) -> str:
-        return box.text(box.call(name, method, **kwargs))
+        return box.text(box.call_method(name, **kwargs))
 
     tool.__name__ = name
     tool.__qualname__ = name
@@ -299,6 +303,6 @@ def _register_custom_tools(
             _tool_signature(fn).bind(**kwargs)
         except TypeError as e:
             raise ToolError(f"{method}: {e}. Signature: {_tool_signature(fn)}") from e
-        return box.text(box.call(method, fn, **kwargs))
+        return box.text(box.call_method(method, **kwargs))
 
     return 5

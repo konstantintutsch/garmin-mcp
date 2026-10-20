@@ -19,7 +19,11 @@ stress, Body Battery, SpO2, steps, body composition, training status/readiness a
 """
 
 
-def build_server(toolset: str = "core", max_chars: int = config.DEFAULT_MAX_CHARS) -> MCPServer:
+def build_server(
+    toolset: str = "core",
+    max_chars: int = config.DEFAULT_MAX_CHARS,
+    session: GarminSession | None = None,
+) -> MCPServer:
     server = MCPServer("garmin", version=__version__, instructions=INSTRUCTIONS)
-    register_tools(server, GarminSession(), toolset, max_chars)
+    register_tools(server, session or GarminSession(), toolset, max_chars)
     return server
