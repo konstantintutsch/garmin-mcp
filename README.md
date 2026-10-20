@@ -1,5 +1,8 @@
 # garmin-mcp
 
+> [!NOTE]
+> This project is entirely vibe-coded. This line is the only line written by a human in the entire codebase.
+
 A local [MCP](https://modelcontextprotocol.io) server that gives AI assistants **read-only** access to
 your [Garmin Connect](https://connect.garmin.com) health and activity data. It is built on the
 community [`garminconnect`](https://github.com/cyberjunky/python-garminconnect) library, so it uses your
