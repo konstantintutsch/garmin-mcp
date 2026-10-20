@@ -1,6 +1,6 @@
 # garmin-mcp
 
-> [!NOTE]
+> [!WARNING]
 > This project is entirely vibe-coded. This line is the only line written by a human in the entire codebase.
 
 A local [MCP](https://modelcontextprotocol.io) server that gives AI assistants **read-only** access to
