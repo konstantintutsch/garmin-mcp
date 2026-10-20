@@ -47,7 +47,27 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 }
 ```
 
-### Claude Code / OpenCode / others
+### OpenCode
+
+Add to `~/.config/opencode/opencode.json`
+
+```json
+{
+    "$schema": "https://opencode.ai/config.json",
+    "mcp": {
+        "garmin-mcp": {
+            "type": "local",
+            "command": ["uv", "run", "garmin-mcp", "serve"],
+            "enabled": true,
+            "environment": {
+                "UV_WORKING_DIR": "/absolute/path/to/garmin-mcp"
+            }
+        }
+    }
+}
+```
+
+### Claude Code / others
 
 ```sh
 claude mcp add garmin -- uv run --directory /absolute/path/to/garmin-mcp garmin-mcp serve
